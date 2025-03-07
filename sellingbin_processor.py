@@ -3,7 +3,7 @@ import json
 import csv
 
 # Define the directory where the JSON file is located
-directory = 'zip_archives/sellingbin'
+directory = ''
 
 # Define the specific JSON file name to look for
 json_filename = 'selling_bin.json'
@@ -74,8 +74,8 @@ else:
             'Trade Ratio': trade_ratio,
             'Gold Coins': coin_conversion["gold"],
             'Iron Coins': coin_conversion["iron"],
-            'Copper Coins': coin_conversion["copper"],
-            'Coins': coin_conversion["coin"]
+            'Copper Coins': coin_conversion["copper"]
+            # 'Coins': coin_conversion["coin"]
         })
 
     # Step 4: Sort trades by trade ratio in descending order
@@ -84,7 +84,7 @@ else:
     # Step 5: Write sorted trade data to CSV
     output_csv_path = 'trades_output_sorted.csv'
     with open(output_csv_path, 'w', newline='') as csv_file:
-        fieldnames = ['Input Item', 'Input Count', 'Output Item', 'Output Count', 'Trade Ratio', 'Gold Coins', 'Iron Coins', 'Copper Coins', 'Coins']
+        fieldnames = ['Input Item', 'Input Count', 'Output Item', 'Output Count', 'Trade Ratio', 'Gold Coins', 'Iron Coins', 'Copper Coins']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         writer.writeheader()
         
@@ -97,8 +97,8 @@ else:
                 'Trade Ratio': f"{trade['Trade Ratio']:.4f}",
                 'Gold Coins': f"{trade['Gold Coins']:,}",
                 'Iron Coins': f"{trade['Iron Coins']:,}",
-                'Copper Coins': f"{trade['Copper Coins']:,}",
-                'Coins': f"{trade['Coins']:,}"
+                'Copper Coins': f"{trade['Copper Coins']:,}"
+                # 'Coins': f"{trade['Coins']:,}"
             })
 
     print(f"Data written to {output_csv_path} successfully from {json_file_path}!")

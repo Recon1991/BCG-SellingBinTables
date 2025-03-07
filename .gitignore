@@ -1,0 +1,12 @@
+# Ignore Python virtual environment folders
+venv/
+.env/
+__pycache__/
+*.pyc
+*.pyo
+
+# Ignore CSV files
+*.csv
+
+# Ignore json files
+*.json
