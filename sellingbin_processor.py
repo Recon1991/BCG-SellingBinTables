@@ -35,6 +35,13 @@ def convert_to_coins(total_coins):
         "coin": coin
     }
 
+# Function to extract mod origin and item name
+def extract_mod_origin(item_string):
+    parts = item_string.split(":")
+    if len(parts) == 2:
+        return parts[0], parts[1].replace('_', ' ')
+    return "unknown", item_string.replace('_', ' ')
+
 # Check if the file exists in the directory
 if not os.path.isfile(json_file_path):
     print(f"{json_filename} not found in the directory.")
@@ -48,10 +55,10 @@ else:
 
     # Step 3: Process each trade, convert emeralds to coins, and calculate trade ratios
     for trade in data['trades']:
-        # Extract item names and counts
-        input_item = trade['input']['filter'].split(':')[-1].replace('_', ' ')
+        # Extract mod origin and item names
+        input_mod, input_item = extract_mod_origin(trade['input']['filter'])
         input_count = trade['input']['count']
-        output_item = trade['output']['item'].split(':')[-1].replace('_', ' ')
+        output_mod, output_item = extract_mod_origin(trade['output']['item'])
         output_count = trade['output']['count']
         
         # Convert emeralds to coins if applicable
@@ -67,8 +74,10 @@ else:
         
         # Append the trade data including trade ratio and coin breakdown
         trade_data.append({
+            'Input Mod': input_mod,
             'Input Item': input_item,
             'Input Count': input_count,
+            'Output Mod': output_mod,
             'Output Item': output_item,
             'Output Count': output_count,
             'Trade Ratio': trade_ratio,
@@ -84,14 +93,16 @@ else:
     # Step 5: Write sorted trade data to CSV
     output_csv_path = 'trades_output_sorted.csv'
     with open(output_csv_path, 'w', newline='') as csv_file:
-        fieldnames = ['Input Item', 'Input Count', 'Output Item', 'Output Count', 'Trade Ratio', 'Gold Coins', 'Iron Coins', 'Copper Coins']
+        fieldnames = ['Input Mod', 'Input Item', 'Input Count', 'Output Mod', 'Output Item', 'Output Count', 'Trade Ratio', 'Gold Coins', 'Iron Coins', 'Copper Coins']
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
         writer.writeheader()
         
         for trade in sorted_trade_data:
             writer.writerow({
+                'Input Mod': trade['Input Mod'],
                 'Input Item': trade['Input Item'],
                 'Input Count': f"{trade['Input Count']:,}",
+                'Output Mod': trade['Output Mod'],
                 'Output Item': trade['Output Item'],
                 'Output Count': f"{trade['Output Count']:,}",
                 'Trade Ratio': f"{trade['Trade Ratio']:.4f}",
