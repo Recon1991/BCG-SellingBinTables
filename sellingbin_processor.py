@@ -39,7 +39,7 @@ def convert_to_coins(total_coins):
 def extract_mod_origin(item_string):
     parts = item_string.split(":")
     if len(parts) == 2:
-        return parts[0], parts[1].replace('_', ' ')
+        return parts[0].title(), parts[1].replace('_', ' ').title()
     return "unknown", item_string.replace('_', ' ')
 
 # Check if the file exists in the directory
